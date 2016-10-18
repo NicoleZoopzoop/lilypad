@@ -168,6 +168,7 @@ class Post(object):
         '_src',
         'markdown_blog'
     )
+    TIME_FORMAT = "%a, %d %b %Y %H:%M:%S +0000"
 
     def __init__(self, file_path):
         """
@@ -235,8 +236,8 @@ class Post(object):
             os.path.splitext(file_name_md)[0] + '.html',
         )
 
-    @staticmethod
-    def get_created(file_path):
+    @classmethod
+    def get_created(cls, file_path):
         # first we see if there's a corresponding time in the DB already
         db = FileTimeDB()
         db_row = db.get(file_path)
@@ -254,12 +255,13 @@ class Post(object):
             epoch_time = db_row['created']
 
         string_time = time.strftime(
-            "%a, %d %b %Y %H:%M:%S +0000",
+            cls.TIME_FORMAT,
             time.gmtime(epoch_time)
         )
         return string_time, epoch_time
 
-    def get_modified(self, file_path):
+    @classmethod
+    def get_modified(cls, file_path):
         db = FileTimeDB()
         row = db.get(file_path)
         epoch_time_from_disk = int(os.path.getmtime(file_path))
@@ -282,7 +284,7 @@ class Post(object):
             epoch_time = row['modified']
 
         string_time = time.strftime(
-            "%a, %d %b %Y %H:%M:%S +0000",  # TODO: class constant
+            cls.TIME_FORMAT,
             time.gmtime(epoch_time),
         )
         return string_time, epoch_time
