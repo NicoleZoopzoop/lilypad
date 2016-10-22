@@ -314,7 +314,7 @@ def main():
             continue
 
         template = jinja_env.get_template(template_name)
-        with open(template_name, 'w') as f:
+        with open(os.path.basename(template_name), 'w') as f:
             f.write(template.render())
 
     # Create the blog by first creating all the individual
