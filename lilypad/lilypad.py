@@ -310,7 +310,7 @@ def main():
     # Create the regular pages first
     for template_name in jinja_env.list_templates():
 
-        if not template_name.startswith('page/'):
+        if not template_name.startswith('pages/'):
             continue
 
         template = jinja_env.get_template(template_name)
